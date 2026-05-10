@@ -44,10 +44,28 @@ html, body { transition: background-color .4s ease, color .4s ease; }
   pointer-events: none;
   overflow: hidden;
 }
+.bg-anim::before {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(208, 148, 87, 0.18) 60deg,
+    transparent 120deg,
+    rgba(138, 90, 46, 0.15) 200deg,
+    transparent 260deg,
+    rgba(201, 165, 112, 0.18) 320deg,
+    transparent 360deg
+  );
+  animation: rotate 40s linear infinite;
+  mix-blend-mode: var(--blob-blend);
+  opacity: var(--blob-opacity);
+}
 .bg-anim__blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(70px);
   opacity: var(--blob-opacity);
   mix-blend-mode: var(--blob-blend);
   will-change: transform;
@@ -57,46 +75,91 @@ html, body { transition: background-color .4s ease, color .4s ease; }
   width: 520px; height: 520px;
   background: radial-gradient(circle, #d09457 0%, transparent 70%);
   top: -120px; left: -120px;
-  animation: blob1 22s ease-in-out infinite;
+  animation: blob1 18s ease-in-out infinite;
 }
 .bg-anim__blob--2 {
   width: 600px; height: 600px;
   background: radial-gradient(circle, #b87340 0%, transparent 70%);
   top: 30%; right: -180px;
-  animation: blob2 28s ease-in-out infinite;
+  animation: blob2 22s ease-in-out infinite;
 }
 .bg-anim__blob--3 {
   width: 480px; height: 480px;
   background: radial-gradient(circle, #8a5a2e 0%, transparent 70%);
   bottom: -160px; left: 25%;
-  animation: blob3 34s ease-in-out infinite;
+  animation: blob3 26s ease-in-out infinite;
 }
 .bg-anim__blob--4 {
   width: 360px; height: 360px;
   background: radial-gradient(circle, #c9a570 0%, transparent 70%);
   top: 65%; left: -80px;
-  animation: blob4 26s ease-in-out infinite;
+  animation: blob4 20s ease-in-out infinite;
+}
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 @keyframes blob1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33%      { transform: translate(180px, 120px) scale(1.15); }
-  66%      { transform: translate(80px, 220px) scale(0.9); }
+  25%      { transform: translate(220px, 150px) scale(1.2); }
+  50%      { transform: translate(120px, 280px) scale(0.85); }
+  75%      { transform: translate(40px, 100px) scale(1.05); }
 }
 @keyframes blob2 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(-220px, 160px) scale(1.1); }
+  33%      { transform: translate(-260px, 180px) scale(1.15); }
+  66%      { transform: translate(-100px, -120px) scale(0.9); }
 }
 @keyframes blob3 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  40%      { transform: translate(-160px, -100px) scale(1.2); }
-  75%      { transform: translate(120px, -60px) scale(0.95); }
+  40%      { transform: translate(-200px, -140px) scale(1.25); }
+  75%      { transform: translate(160px, -80px) scale(0.95); }
 }
 @keyframes blob4 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(180px, -140px) scale(1.1); }
+  35%      { transform: translate(220px, -180px) scale(1.15); }
+  70%      { transform: translate(80px, 200px) scale(0.9); }
 }
+
+/* Floating dust particles */
+.particles {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.25;
+  bottom: -20px;
+  animation: float-up linear infinite;
+}
+.particle:nth-child(1)  { left: 5%;  width: 3px; height: 3px; animation-duration: 22s; animation-delay: 0s; }
+.particle:nth-child(2)  { left: 12%; width: 5px; height: 5px; animation-duration: 28s; animation-delay: -5s; opacity: 0.18; }
+.particle:nth-child(3)  { left: 22%; width: 2px; height: 2px; animation-duration: 18s; animation-delay: -2s; }
+.particle:nth-child(4)  { left: 33%; width: 4px; height: 4px; animation-duration: 25s; animation-delay: -10s; opacity: 0.2; }
+.particle:nth-child(5)  { left: 45%; width: 3px; height: 3px; animation-duration: 30s; animation-delay: -7s; }
+.particle:nth-child(6)  { left: 56%; width: 5px; height: 5px; animation-duration: 20s; animation-delay: -12s; opacity: 0.18; }
+.particle:nth-child(7)  { left: 67%; width: 2px; height: 2px; animation-duration: 24s; animation-delay: -3s; }
+.particle:nth-child(8)  { left: 78%; width: 4px; height: 4px; animation-duration: 27s; animation-delay: -15s; opacity: 0.22; }
+.particle:nth-child(9)  { left: 88%; width: 3px; height: 3px; animation-duration: 21s; animation-delay: -8s; }
+.particle:nth-child(10) { left: 95%; width: 5px; height: 5px; animation-duration: 32s; animation-delay: -18s; opacity: 0.16; }
+@keyframes float-up {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  10%  { opacity: 0.3; }
+  50%  { transform: translateY(-50vh) translateX(30px); }
+  90%  { opacity: 0.2; }
+  100% { transform: translateY(-110vh) translateX(-20px); opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .bg-anim__blob { animation: none !important; }
+  .bg-anim__blob,
+  .bg-anim::before,
+  .particle { animation: none !important; }
 }
 
 /* Subtle grain overlay */
