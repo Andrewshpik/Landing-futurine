@@ -367,9 +367,11 @@
         <span data-i18n="form.msg">Комментарий</span>
         <textarea name="message" rows="3" placeholder="Размеры, порода дерева, сроки" data-i18n-ph="form.msg.ph"></textarea>
       </label>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
       <button type="submit" class="btn btn--primary btn--full" data-i18n="form.submit">Отправить заявку</button>
       <p class="form__policy" data-i18n="form.policy">Нажимая кнопку, вы&nbsp;соглашаетесь с&nbsp;<a href="#">политикой обработки данных</a>.</p>
       <p class="form__success" hidden data-i18n="form.success">Спасибо! Уже&nbsp;готовлю ответ и&nbsp;скоро свяжусь с&nbsp;вами.</p>
+      <p class="form__error" hidden data-i18n="form.error">Не&nbsp;получилось отправить — позвоните или попробуйте ещё&nbsp;раз.</p>
     </form>
   </div>
 </section>

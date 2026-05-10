@@ -983,6 +983,15 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   margin: 0;
   font-size: 0.95rem;
 }
+.form__error {
+  text-align: center;
+  color: #8a2d2d;
+  background: #f7e0e0;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  margin: 0;
+  font-size: 0.95rem;
+}
 
 /* Footer */
 .footer {

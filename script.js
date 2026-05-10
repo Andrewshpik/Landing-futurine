@@ -71,19 +71,44 @@ if (phoneInput) {
 }
 
 // Form submit
+const FORM_ENDPOINT = 'https://dubrava-form.andrewshpik.workers.dev';
 const form = document.getElementById('contactForm');
 if (form) {
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     const name = form.name.value.trim();
-    const phone = form.phone.value.replace(/\D/g, '');
-    if (!name || phone.length < 11) {
+    const phone = form.phone.value.trim();
+    if (!name || phone.replace(/\D/g, '').length < 10) {
       form.querySelector(name ? 'input[name="phone"]' : 'input[name="name"]').focus();
       return;
     }
-    form.querySelector('.form__success').hidden = false;
-    form.querySelector('button[type="submit"]').disabled = true;
-    setTimeout(() => form.reset(), 100);
+
+    const successEl = form.querySelector('.form__success');
+    const errorEl = form.querySelector('.form__error');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (errorEl) errorEl.hidden = true;
+    submitBtn.disabled = true;
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          phone,
+          product: form.product?.value || '',
+          message: form.message?.value || '',
+          website: form.website?.value || '',
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || 'send_failed');
+      successEl.hidden = false;
+      setTimeout(() => form.reset(), 100);
+    } catch (err) {
+      submitBtn.disabled = false;
+      if (errorEl) errorEl.hidden = false;
+    }
   });
 }
 
