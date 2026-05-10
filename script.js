@@ -8,6 +8,36 @@ if (themeToggle) {
   });
 }
 
+// Language toggle
+function applyLang(lang) {
+  const dict = (window.TRANSLATIONS && window.TRANSLATIONS[lang]) || {};
+  document.documentElement.setAttribute('lang', lang);
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] != null) el.innerHTML = dict[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (dict[key] != null) el.setAttribute('placeholder', dict[key]);
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+    const key = el.getAttribute('data-i18n-aria');
+    if (dict[key] != null) el.setAttribute('aria-label', dict[key]);
+  });
+}
+
+const savedLang = localStorage.getItem('lang') || 'ru';
+applyLang(savedLang);
+
+const langToggle = document.querySelector('.lang-toggle');
+if (langToggle) {
+  langToggle.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('lang') === 'ru' ? 'be' : 'ru';
+    localStorage.setItem('lang', next);
+    applyLang(next);
+  });
+}
+
 // Catalog filters
 const filters = document.querySelectorAll('.filter');
 const products = document.querySelectorAll('.product');

@@ -232,6 +232,33 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 }
 .nav a:hover { color: var(--accent); }
 
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  transition: background .2s, border-color .2s, color .2s;
+  flex-shrink: 0;
+}
+.lang-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-alt);
+}
+.lang-toggle__current { color: var(--ink); }
+.lang-toggle__sep { opacity: 0.5; }
+.lang-toggle__next { opacity: 0.6; }
+.lang-toggle:hover .lang-toggle__next { opacity: 1; }
+
 .theme-toggle {
   width: 40px; height: 40px;
   border-radius: 50%;
