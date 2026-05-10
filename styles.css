@@ -406,6 +406,29 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   color: var(--accent);
 }
 
+/* Works / Portfolio */
+.works { padding: 110px 0; }
+.works__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.work {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius);
+  aspect-ratio: 4/5;
+  background: var(--bg-alt);
+  box-shadow: var(--shadow);
+}
+.work img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .5s ease;
+}
+.work:hover img { transform: scale(1.05); }
+
 /* Process */
 .process {
   padding: 110px 0;
@@ -661,11 +684,12 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   .hero__stats { grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .hero__stats strong { font-size: 1.6rem; }
 
-  .advantages, .catalog, .process, .about, .reviews, .contact { padding: 72px 0; }
+  .advantages, .catalog, .works, .process, .about, .reviews, .contact { padding: 72px 0; }
   .section-head { margin-bottom: 48px; }
 
   .advantages__grid,
   .products,
+  .works__grid,
   .reviews__grid { grid-template-columns: repeat(2, 1fr); }
 
   .steps { grid-template-columns: repeat(2, 1fr); }
@@ -711,11 +735,12 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   .hero__badge strong { font-size: 1.05rem; }
   .hero__badge span { font-size: 0.75rem; }
 
-  .advantages, .catalog, .process, .about, .reviews, .contact { padding: 56px 0; }
+  .advantages, .catalog, .works, .process, .about, .reviews, .contact { padding: 56px 0; }
   .section-head { margin-bottom: 36px; }
 
   .advantages__grid,
   .products,
+  .works__grid,
   .reviews__grid,
   .steps { grid-template-columns: 1fr; gap: 16px; }
 
