@@ -1,3 +1,13 @@
+// Theme toggle
+const themeToggle = document.querySelector('.theme-toggle');
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+}
+
 // Catalog filters
 const filters = document.querySelectorAll('.filter');
 const products = document.querySelectorAll('.product');
