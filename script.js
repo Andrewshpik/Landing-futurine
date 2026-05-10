@@ -111,7 +111,80 @@ const io = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.12 });
 
-document.querySelectorAll('.advantage, .product, .steps li, .review').forEach(el => {
-  el.style.cssText += 'opacity:0;transform:translateY(20px);transition:opacity .6s ease, transform .6s ease;';
+document.querySelectorAll('.advantage, .product, .steps li, .review').forEach((el, i) => {
+  el.style.cssText += 'opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(0.2,0.8,0.2,1) ' + (i % 4 * 0.08) + 's, transform .7s cubic-bezier(0.2,0.8,0.2,1) ' + (i % 4 * 0.08) + 's;';
   io.observe(el);
 });
+
+// Scroll progress bar
+const progressBar = document.querySelector('.scroll-progress');
+if (progressBar) {
+  const updateProgress = () => {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    progressBar.style.width = (scrolled * 100) + '%';
+  };
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+}
+
+// Counter animation for hero stats
+const animateCounter = (el) => {
+  const text = el.textContent.trim();
+  const match = text.match(/^(\d+)(.*)$/);
+  if (!match) return;
+  const target = parseInt(match[1], 10);
+  const suffix = match[2];
+  const duration = 1400;
+  const start = performance.now();
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(target * eased) + suffix;
+    if (t < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+};
+const statsObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('strong').forEach(animateCounter);
+      statsObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+const heroStats = document.querySelector('.hero__stats');
+if (heroStats) statsObserver.observe(heroStats);
+
+// Mouse parallax on hero images
+const heroMedia = document.querySelector('.hero__media');
+if (heroMedia && window.matchMedia('(min-width: 980px)').matches) {
+  const img1 = heroMedia.querySelector('.hero__image--1');
+  const img2 = heroMedia.querySelector('.hero__image--2');
+  heroMedia.addEventListener('mousemove', (e) => {
+    const rect = heroMedia.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    if (img1) img1.style.transform = `rotate(2deg) translate(${x * -14}px, ${y * -14}px)`;
+    if (img2) img2.style.transform = `rotate(-3deg) translate(${x * 18}px, ${y * 18}px)`;
+  });
+  heroMedia.addEventListener('mouseleave', () => {
+    if (img1) img1.style.transform = '';
+    if (img2) img2.style.transform = '';
+  });
+}
+
+// 3D tilt on product cards
+if (window.matchMedia('(min-width: 720px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.product').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(900px) rotateY(${x * 6}deg) rotateX(${y * -6}deg) translateY(-6px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}

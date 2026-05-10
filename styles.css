@@ -36,6 +36,18 @@
 
 html, body { transition: background-color .4s ease, color .4s ease; }
 
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  z-index: 100;
+  transition: width 0.1s ease-out;
+  pointer-events: none;
+}
+
 /* Animated warm-light blobs */
 .bg-anim {
   position: fixed;
@@ -203,7 +215,16 @@ h1 { font-size: clamp(2.6rem, 6.5vw, 5.6rem); }
 h1 em {
   font-style: italic;
   font-weight: 400;
-  color: var(--accent);
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 50%, var(--accent) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 h2 { font-size: clamp(2rem, 4vw, 3.4rem); }
 h2 em { font-style: italic; font-weight: 400; color: var(--accent); }
@@ -292,8 +313,21 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   color: var(--ink-soft);
   transition: color .2s;
   position: relative;
+  padding: 4px 0;
+}
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .35s ease;
 }
 .nav a:hover { color: var(--accent); }
+.nav a:hover::after { transform: scaleX(1); transform-origin: left; }
 
 .lang-toggle {
   display: inline-flex;
@@ -467,6 +501,49 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 }
 .hero__media:hover .hero__image--1 { transform: rotate(0); }
 .hero__media:hover .hero__image--2 { transform: rotate(0); }
+
+/* Scroll indicator under hero */
+.scroll-indicator {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: fade-bounce 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+.scroll-indicator__line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, transparent, var(--accent));
+  position: relative;
+  overflow: hidden;
+}
+.scroll-indicator__line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--bg);
+  animation: scroll-dot 2s ease-in-out infinite;
+}
+@keyframes fade-bounce {
+  0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
+  50%      { opacity: 1;   transform: translateX(-50%) translateY(6px); }
+}
+@keyframes scroll-dot {
+  0%   { top: -50%; }
+  100% { top: 100%; }
+}
 .hero__badge {
   position: absolute;
   bottom: 24px;
@@ -477,6 +554,12 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
+  animation: float-badge 4s ease-in-out infinite;
+  z-index: 3;
+}
+@keyframes float-badge {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(-10px) rotate(1deg); }
 }
 .hero__badge strong {
   font-family: 'Cormorant Garamond', serif;
@@ -508,6 +591,7 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   font-weight: 400;
   padding-left: 32px;
 }
+.marquee:hover .marquee__track { animation-play-state: paused; }
 .marquee__dot {
   color: var(--accent);
   font-size: 0.9rem;
@@ -627,12 +711,13 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   background: var(--surface);
   border-radius: var(--radius);
   overflow: hidden;
-  transition: transform .3s, box-shadow .3s;
+  transition: transform .4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow .3s;
   display: flex;
   flex-direction: column;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 .product:hover {
-  transform: translateY(-6px);
   box-shadow: var(--shadow);
 }
 .product.is-hidden { display: none; }
