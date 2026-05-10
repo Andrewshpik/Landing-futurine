@@ -51,16 +51,13 @@ if (form) {
 const burger = document.querySelector('.burger');
 const nav = document.querySelector('.nav');
 if (burger && nav) {
-  burger.addEventListener('click', () => {
-    const open = nav.classList.toggle('is-open');
-    nav.style.cssText = open
-      ? 'display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--surface);padding:24px;gap:16px;box-shadow:var(--shadow);'
-      : '';
-  });
-  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    nav.classList.remove('is-open');
-    nav.style.cssText = '';
-  }));
+  const toggle = (open) => {
+    nav.classList.toggle('is-open', open);
+    burger.classList.toggle('is-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  burger.addEventListener('click', () => toggle(!nav.classList.contains('is-open')));
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggle(false)));
 }
 
 // Reveal on scroll
